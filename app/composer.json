@@ -1,0 +1,13 @@
+{
+    "name": "airowl/rest-api",
+    "description": "Rest api test",
+    "authors": [
+        {
+            "name": "airowl",
+            "email": "airowl.gasga@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "App\\": "" }
+    }
+}
