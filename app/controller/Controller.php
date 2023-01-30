@@ -3,15 +3,15 @@
 class Controller
 {    
     private $conn;
-    private $table;
-    private $personId;
-    private $lastName;
-    private $firstName;
-    private $address;
-    private $city;
+    public $table;
+    public $personId;
+    public $lastName;
+    public $firstName;
+    public $address;
+    public $city;
 
     // connection
-    public function __construct($db, $table)
+    public function __construct($db, $table = null)
     {
         $this->conn = $db->getConnection();
         $this->table = $table;
@@ -25,29 +25,46 @@ class Controller
         $res = $persons->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
-    // create
-    public function createUser()
+
+    // get single record
+    public function getSingleRecord($id)
     {
-        $sqlQuery = "INSERT INTO
-                    ". $this->table ."
-                SET
+        $sqlQuery = "SELECT * FROM " . $this->table . " WHERE PersonID = " . $id . "";
+        $person = $this->conn->query($sqlQuery);
+        $res = $person->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
+
+    // create
+    public function createRecord()
+    {
+        $sqlQuery = "INSERT INTO " . $this->table . " SET
                     PersonID = :personId, 
                     LastName = :lastName, 
                     FirstName = :firstName, 
                     Address = :address, 
-                    City = :city";
+                    City = :city ";
 
         $createUser = $this->conn->prepare($sqlQuery);
 
         //! sanitize come un covertitore da inserire nel DB
-        $this->personId = htmlspecialchars(strip_tags($this->personId));
-        $this->lastName = htmlspecialchars(strip_tags($this->lastName));
-        $this->firstName = htmlspecialchars(strip_tags($this->firstName));
-        $this->address = htmlspecialchars(strip_tags($this->address));
-        $this->city = htmlspecialchars(strip_tags($this->city));
+        //$this->personId = htmlspecialchars(strip_tags($this->personId));
+        //$this->lastName = htmlspecialchars(strip_tags($this->lastName));
+        //$this->firstName = htmlspecialchars(strip_tags($this->firstName));
+        //$this->address = htmlspecialchars(strip_tags($this->address));
+        //$this->city = htmlspecialchars(strip_tags($this->city));
 
-        // bindname
+        //! bind data
         $createUser->bindParam(":personId", $this->personId);
+        $createUser->bindParam(":lastName", $this->lastName);
+        $createUser->bindParam(":firstName", $this->firstName);
+        $createUser->bindParam(":address", $this->address);
+        $createUser->bindParam(":city", $this->city);
+
+        if ($createUser->execute()) {
+            return true;
+        }
+        return false;
     }
 
     // update

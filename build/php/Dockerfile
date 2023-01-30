@@ -18,3 +18,5 @@ RUN cd /tmp/ \
     && chmod +x ./composer.phar \
     && mv ./composer.phar /usr/local/bin/composer \
     && /usr/local/bin/composer self-update
+
+RUN a2enmod rewrite
