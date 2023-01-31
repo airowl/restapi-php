@@ -10,21 +10,16 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 $database = new Database();
-$record = new Controller($database, "Persons");
+$controller = new Controller($database, 'Persons');
 
 $data = json_decode(file_get_contents("php://input"));
 
-$record->personId = $data->personId;
-$record->lastName = $data->lastName;
-$record->firstName = $data->firstName;
-$record->address = $data->addresss;
-$record->city = $data->city;
+$controller->personId = $data->personId;
 
-
-if ($record->createRecord()) {
+if ($controller->deleteRecord()) {
     echo json_encode(
         [
-            'request_methon' => 'Record created successfully',
+            'request_methon' => 'Record deleted successfully',
             'success' => http_response_code(),
         ]
     );

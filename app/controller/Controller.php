@@ -89,6 +89,14 @@ class Controller
     //delete
     public function deleteRecord()
     {
-        
+        $sqlQuery = "DELETE FROM " . $this->table . " WHERE PersonID = ?";
+        $deleteRecord = $this->conn->prepare($sqlQuery);
+
+        $deleteRecord->bindParam(1, $this->personId);
+
+        if ($deleteRecord->execute()) {
+            return true;
+        }
+        return false;
     }
 }
