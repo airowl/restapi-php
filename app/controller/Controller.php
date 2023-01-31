@@ -47,13 +47,6 @@ class Controller
 
         $createUser = $this->conn->prepare($sqlQuery);
 
-        //! sanitize come un covertitore da inserire nel DB
-        //$this->personId = htmlspecialchars(strip_tags($this->personId));
-        //$this->lastName = htmlspecialchars(strip_tags($this->lastName));
-        //$this->firstName = htmlspecialchars(strip_tags($this->firstName));
-        //$this->address = htmlspecialchars(strip_tags($this->address));
-        //$this->city = htmlspecialchars(strip_tags($this->city));
-
         //! bind data
         $createUser->bindParam(":personId", $this->personId);
         $createUser->bindParam(":lastName", $this->lastName);
@@ -68,6 +61,34 @@ class Controller
     }
 
     // update
+    public function updateRecord()
+    {
+        $sqlQuery = "UPDATE " . $this->table . " SET
+                        PersonID = :personId, 
+                        LastName = :lastName, 
+                        FirstName = :firstName, 
+                        Address = :address, 
+                        City = :city 
+                        WHERE PersonID = :personId";
+
+        $updateRecord = $this->conn->prepare($sqlQuery);
+
+        //! bind data
+        $updateRecord->bindParam(":personId", $this->personId);
+        $updateRecord->bindParam(":lastName", $this->lastName);
+        $updateRecord->bindParam(":firstName", $this->firstName);
+        $updateRecord->bindParam(":address", $this->address);
+        $updateRecord->bindParam(":city", $this->city);
+
+        if ($updateRecord->execute()) {
+            return true;
+        }
+        return false;
+    }
 
     //delete
+    public function deleteRecord()
+    {
+        
+    }
 }
